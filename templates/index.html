@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        EventAura
+    </title>
+
+
+    <!-- Main CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+
+    <!-- Google Fonts -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     MAIN PAGE
+     ========================================================= -->
+
+<div class="page">
+
+
+    <!-- =====================================================
+         HERO SECTION
+         ===================================================== -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+
+            <div class="hero-badge">
+
+                ✦ EventAura · AI-Powered Event Management
+
+            </div>
+
+
+            <h1>
+
+                EventAura
+
+            </h1>
+
+
+            <p class="hero-description">
+
+                Celebrate Every Moment. Certify Every Achievement.
+                Create events, manage participants, track QR attendance,
+                and generate beautiful AI-powered certificates with seamless email delivery.
+
+            </p>
+
+
+            <!-- Event platform highlights -->
+
+            <div class="event-info-grid">
+
+
+                <div class="event-info-item">
+
+                    <span>
+                        EVENT MANAGEMENT
+                    </span>
+
+                    <strong>
+                        Create & Manage
+                    </strong>
+
+                </div>
+
+
+                <div class="event-info-item">
+
+                    <span>
+                        ATTENDANCE
+                    </span>
+
+                    <strong>
+                        QR Based
+                    </strong>
+
+                </div>
+
+
+                <div class="event-info-item">
+
+                    <span>
+                        CERTIFICATES
+                    </span>
+
+                    <strong>
+                        AI Generated
+                    </strong>
+
+                </div>
+
+
+                <div class="event-info-item">
+
+                    <span>
+                        DELIVERY
+                    </span>
+
+                    <strong>
+                        Email Automation
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FLASH MESSAGES
+         ===================================================== -->
+
+    <div class="flash-container">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div
+                        class="flash-message {{ category }}"
+                    >
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+    </div>
+
+
+
+    <!-- =====================================================
+         CREATE EVENT CARD
+         ===================================================== -->
+
+    <section class="card">
+
+
+        <!-- Section heading -->
+
+        <div class="section-header">
+
+            <div>
+
+                <span class="section-label">
+                    STEP 01
+                </span>
+
+                <h2>
+                    Create Your Event
+                </h2>
+
+                <p>
+                    Enter the organization and event details
+                    to begin your certificate workflow.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             CREATE EVENT FORM
+             ================================================= -->
+
+        <form
+            action="/create-event"
+            method="POST"
+            id="event-form"
+        >
+
+
+            <!-- =================================================
+                 ORGANIZATION DETAILS
+                 ================================================= -->
+
+            <div class="form-section">
+
+
+                <div class="form-section-title">
+
+                    <div class="form-section-icon">
+                        🏢
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Organization Details
+                        </h3>
+
+                        <p>
+                            Information about the organization
+                            conducting the event.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Organization grid -->
+
+                <div class="design-grid">
+
+
+                    <!-- Organization Name -->
+
+                    <div class="design-option">
+
+                        <label for="organization_name">
+
+                            Organization Name
+
+                        </label>
+
+                        <input
+                            id="organization_name"
+                            type="text"
+                            name="organization_name"
+                            placeholder="Example: Creative Clay Cafe"
+                            required
+                        >
+
+                        <small>
+                            Enter the official name of your organization.
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- Organization Type -->
+
+                    <div class="design-option">
+
+                        <label for="organization_type">
+
+                            Organization Type
+
+                        </label>
+
+                        <input
+                            id="organization_type"
+                            type="text"
+                            name="organization_type"
+                            placeholder="Example: Cafe / College / Company"
+                            required
+                        >
+
+                        <small>
+                            Example: College, Company, NGO, Cafe.
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- Organization Email -->
+
+                    <div class="design-option">
+
+                        <label for="organization_email">
+
+                            Organization Email
+
+                        </label>
+
+                        <input
+                            id="organization_email"
+                            type="email"
+                            name="organization_email"
+                            placeholder="organizer@example.com"
+                            required
+                        >
+
+                        <small>
+                            Used for organizer communication.
+                        </small>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 EVENT DETAILS
+                 ================================================= -->
+
+            <div class="form-section">
+
+
+                <div class="form-section-title">
+
+                    <div class="form-section-icon">
+                        🎫
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Event Details
+                        </h3>
+
+                        <p>
+                            Tell us about the event so the AI
+                            can understand its certificate style.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="design-grid">
+
+
+                    <!-- Event Name -->
+
+                    <div class="design-option">
+
+                        <label for="event_name">
+
+                            Event Name
+
+                        </label>
+
+                        <input
+                            id="event_name"
+                            type="text"
+                            name="event_name"
+                            placeholder="Example: Weekend Pottery Workshop"
+                            required
+                        >
+
+                        <small>
+                            Enter the official event or workshop name.
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- Event Type -->
+
+                    <div class="design-option">
+
+                        <label for="event_type">
+
+                            Event Type
+
+                        </label>
+
+                        <select
+                            id="event_type"
+                            name="event_type"
+                            required
+                        >
+
+                            <option value="">
+                                Select Event Type
+                            </option>
+
+                            <option value="Workshop">
+                                Workshop
+                            </option>
+
+                            <option value="College Event">
+                                College Event
+                            </option>
+
+                            <option value="Seminar">
+                                Seminar
+                            </option>
+
+                            <option value="Conference">
+                                Conference
+                            </option>
+
+                            <option value="Training">
+                                Training
+                            </option>
+
+                            <option value="Competition">
+                                Competition
+                            </option>
+
+                            <option value="Hackathon">
+                                Hackathon
+                            </option>
+
+                            <option value="Art Workshop">
+                                Art Workshop
+                            </option>
+
+                            <option value="Pottery Workshop">
+                                Pottery Workshop
+                            </option>
+
+                            <option value="Cultural Event">
+                                Cultural Event
+                            </option>
+
+                            <option value="Sports Event">
+                                Sports Event
+                            </option>
+
+                            <option value="Technical Event">
+                                Technical Event
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                        <small>
+                            This helps determine the appropriate
+                            certificate design.
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- Event Date -->
+
+                    <div class="design-option">
+
+                        <label for="event_date">
+
+                            Event Date
+
+                        </label>
+
+                        <input
+                            id="event_date"
+                            type="date"
+                            name="event_date"
+                            required
+                        >
+
+                        <small>
+                            Select the date on which the event is conducted.
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- Venue -->
+
+                    <div class="design-option">
+
+                        <label for="venue">
+
+                            Venue
+
+                        </label>
+
+                        <input
+                            id="venue"
+                            type="text"
+                            name="venue"
+                            placeholder="Example: Creative Clay Cafe"
+                            required
+                        >
+
+                        <small>
+                            Enter the event location or venue.
+                        </small>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- Event Description -->
+
+                <div class="description-field">
+
+                    <label for="description">
+
+                        Event Description
+
+                    </label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        rows="5"
+                        placeholder="Describe your event, workshop, competition, seminar, or activity..."
+                        required
+                    ></textarea>
+
+                    <small>
+                        A detailed description helps the AI understand
+                        the event theme and create a suitable certificate
+                        design.
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 AI CERTIFICATE DESIGN INFORMATION
+                 ================================================= -->
+
+            <div class="ai-designer">
+
+
+                <div class="ai-heading">
+
+
+                    <div class="ai-icon">
+
+                        ✨
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            AI Certificate Designer
+                        </h2>
+
+                        <p>
+                            Your event details will be used to create
+                            a certificate style suitable for your event.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- AI explanation -->
+
+                <div class="ai-explanation">
+
+
+                    <div class="ai-explanation-icon">
+
+                        🤖
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            How AI Certificate Design Works
+                        </strong>
+
+
+                        <p>
+
+                            The platform analyzes your event type,
+                            event name, and description to determine
+                            a suitable visual style, color palette,
+                            typography, and certificate theme.
+
+                        </p>
+
+
+                        <div class="ai-flow">
+
+                            <span>
+                                Event Details
+                            </span>
+
+                            <span>
+                                →
+                            </span>
+
+                            <span>
+                                AI Analysis
+                            </span>
+
+                            <span>
+                                →
+                            </span>
+
+                            <span>
+                                Design Theme
+                            </span>
+
+                            <span>
+                                →
+                            </span>
+
+                            <span>
+                                Certificate
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Event context -->
+
+                <div class="event-context">
+
+
+                    <div class="context-card">
+
+                        <span>
+                            EVENT TYPE
+                        </span>
+
+                        <strong
+                            id="ai-event-type-preview"
+                        >
+                            Not selected
+                        </strong>
+
+                    </div>
+
+
+                    <div class="context-card">
+
+                        <span>
+                            EVENT
+                        </span>
+
+                        <strong
+                            id="ai-event-name-preview"
+                        >
+                            Not entered
+                        </strong>
+
+                    </div>
+
+
+                    <div class="context-card">
+
+                        <span>
+                            AI DESIGN
+                        </span>
+
+                        <strong>
+                            Automatic
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- AI note -->
+
+                <div class="ai-note">
+
+
+                    <div>
+                        ✦
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Smart Design Selection
+                        </strong>
+
+                        <p>
+
+                            A pottery workshop, hackathon,
+                            conference, cultural event, or
+                            technical workshop can receive
+                            a different visual design.
+
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 SUBMIT AREA
+                 ================================================= -->
+
+            <div class="generate-area">
+
+
+                <div>
+
+                    <strong>
+                        Ready to create your event?
+                    </strong>
+
+                    <p>
+                        Continue to participant registration
+                        and certificate generation.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="button generate-button"
+                    id="create-event-button"
+                >
+
+                    ✨ Create Event
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         PLATFORM FEATURES
+         ===================================================== -->
+
+    <section class="card">
+
+
+        <div class="section-header">
+
+            <div>
+
+                <span class="section-label">
+                    PLATFORM FEATURES
+                </span>
+
+                <h2>
+                    Everything You Need
+                </h2>
+
+                <p>
+                    A complete workflow for managing events
+                    and automatically issuing certificates.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="event-context">
+
+
+            <div class="context-card">
+
+                <span>
+                    EVENT MANAGEMENT
+                </span>
+
+                <strong>
+                    Create & Manage Events
+                </strong>
+
+            </div>
+
+
+            <div class="context-card">
+
+                <span>
+                    REGISTRATION
+                </span>
+
+                <strong>
+                    Participant Registration
+                </strong>
+
+            </div>
+
+
+            <div class="context-card">
+
+                <span>
+                    IDENTIFICATION
+                </span>
+
+                <strong>
+                    Automatic Registration ID
+                </strong>
+
+            </div>
+
+
+            <div class="context-card">
+
+                <span>
+                    ATTENDANCE
+                </span>
+
+                <strong>
+                    QR-Based Attendance
+                </strong>
+
+            </div>
+
+
+            <div class="context-card">
+
+                <span>
+                    MERIT
+                </span>
+
+                <strong>
+                    Merit Certificates
+                </strong>
+
+            </div>
+
+
+            <div class="context-card">
+
+                <span>
+                    PARTICIPATION
+                </span>
+
+                <strong>
+                    Participation Certificates
+                </strong>
+
+            </div>
+
+
+            <div class="context-card">
+
+                <span>
+                    PDF
+                </span>
+
+                <strong>
+                    Automatic PDF Generation
+                </strong>
+
+            </div>
+
+
+            <div class="context-card">
+
+                <span>
+                    DELIVERY
+                </span>
+
+                <strong>
+                    Email Certificate Delivery
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         DASHBOARD BUTTON
+         ===================================================== -->
+
+    <div class="bottom-navigation">
+
+        <a
+            href="/dashboard"
+            class="button secondary"
+        >
+
+            📊 View Event Dashboard
+
+        </a>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        /* ============================================
+           EVENT TYPE PREVIEW
+           ============================================ */
+
+        const eventType =
+            document.getElementById(
+                "event_type"
+            );
+
+
+        const eventTypePreview =
+            document.getElementById(
+                "ai-event-type-preview"
+            );
+
+
+        if (eventType && eventTypePreview) {
+
+            eventType.addEventListener(
+                "change",
+                function () {
+
+                    if (eventType.value) {
+
+                        eventTypePreview.textContent =
+                            eventType.value;
+
+                    } else {
+
+                        eventTypePreview.textContent =
+                            "Not selected";
+
+                    }
+
+                }
+            );
+
+        }
+
+
+
+        /* ============================================
+           EVENT NAME PREVIEW
+           ============================================ */
+
+        const eventName =
+            document.getElementById(
+                "event_name"
+            );
+
+
+        const eventNamePreview =
+            document.getElementById(
+                "ai-event-name-preview"
+            );
+
+
+        if (eventName && eventNamePreview) {
+
+            eventName.addEventListener(
+                "input",
+                function () {
+
+                    if (eventName.value.trim()) {
+
+                        eventNamePreview.textContent =
+                            eventName.value;
+
+                    } else {
+
+                        eventNamePreview.textContent =
+                            "Not entered";
+
+                    }
+
+                }
+            );
+
+        }
+
+
+
+        /* ============================================
+           CREATE EVENT BUTTON
+           ============================================ */
+
+        const eventForm =
+            document.getElementById(
+                "event-form"
+            );
+
+
+        const createButton =
+            document.getElementById(
+                "create-event-button"
+            );
+
+
+        if (eventForm && createButton) {
+
+            eventForm.addEventListener(
+                "submit",
+                function () {
+
+                    createButton.disabled =
+                        true;
+
+                    createButton.innerHTML =
+                        "⏳ Creating Event...";
+
+                }
+            );
+
+        }
+
+    }
+
+);
+
+</script>
+
+
+</body>
+
+</html>

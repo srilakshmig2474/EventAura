@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Event | EventAura</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    body { background: #f4f6fc; }
+    .edit-page { width: min(900px, 92%); margin: 38px auto 70px; }
+    .edit-header { padding: 30px; border-radius: 22px; color: #fff; background: linear-gradient(135deg,#14233f,#6558e8); margin-bottom: 22px; }
+    .edit-header h1 { font-size: clamp(28px,4vw,38px); margin: 8px 0; }
+    .edit-header p { color: #e0e5ff; }
+    .edit-card { background: #fff; border: 1px solid #e4e8f1; border-radius: 20px; padding: clamp(20px,4vw,34px); box-shadow: 0 12px 32px rgba(25,35,65,.07); }
+    .field-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+    .field { display:flex; flex-direction:column; gap:7px; }
+    .field.full { grid-column:1/-1; }
+    .field label { font-weight:700; color:#344054; font-size:14px; }
+    .field input,.field select,.field textarea { width:100%; padding:12px 13px; border:1px solid #d0d5dd; border-radius:10px; font:inherit; color:#172033; background:#fff; }
+    .field input:focus,.field select:focus,.field textarea:focus { outline:3px solid #e4e0ff; border-color:#6558e8; }
+    .actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:24px; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; padding:12px 18px; border:0; border-radius:10px; font-weight:750; cursor:pointer; text-decoration:none; }
+    .btn-save { color:#fff; background:linear-gradient(135deg,#5145cd,#7c5ce7); }
+    .btn-cancel { color:#344054; background:#eef1f6; }
+    .flash { padding:12px 15px; margin-bottom:14px; border-radius:10px; background:#fff0f1; color:#b42332; }
+    .flash.success { background:#ecfdf3; color:#067647; }
+    @media(max-width:620px) { .field-grid { grid-template-columns:1fr; } .field.full { grid-column:auto; } }
+  </style>
+</head>
+<body>
+  <main class="edit-page">
+    <header class="edit-header">
+      <div>✦ EVENTAURA · EVENT MANAGEMENT</div>
+      <h1>Edit event details</h1>
+      <p>Update your event and organization information. Existing registrations are preserved.</p>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% set values = form_data if form_data is defined else none %}
+    <form class="edit-card" method="POST">
+      <div class="field-grid">
+        <div class="field">
+          <label for="organization_name">Organization name *</label>
+          <input id="organization_name" name="organization_name" required value="{{ values.organization_name if values else event[7] }}">
+        </div>
+        <div class="field">
+          <label for="organization_type">Organization type *</label>
+          <input id="organization_type" name="organization_type" required value="{{ values.organization_type if values else event[8] }}">
+        </div>
+        <div class="field full">
+          <label for="organization_email">Organization email *</label>
+          <input id="organization_email" type="email" name="organization_email" required value="{{ values.organization_email if values else event[9] }}">
+        </div>
+        <div class="field">
+          <label for="event_name">Event name *</label>
+          <input id="event_name" name="event_name" required value="{{ values.event_name if values else event[2] }}">
+        </div>
+        <div class="field">
+          <label for="event_type">Event type *</label>
+          <input id="event_type" name="event_type" required value="{{ values.event_type if values else event[3] }}">
+        </div>
+        <div class="field">
+          <label for="event_date">Event date *</label>
+          <input id="event_date" type="date" name="event_date" required value="{{ values.event_date if values else event[5] }}">
+        </div>
+        <div class="field">
+          <label for="venue">Venue *</label>
+          <input id="venue" name="venue" required value="{{ values.venue if values else event[6] }}">
+        </div>
+        <div class="field full">
+          <label for="description">Event description</label>
+          <textarea id="description" name="description" rows="5">{{ values.description if values else event[4] }}</textarea>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-save" type="submit">Save changes</button>
+        <a class="btn btn-cancel" href="{{ url_for('dashboard') }}">Cancel</a>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

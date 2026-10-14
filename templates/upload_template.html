@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Certificate Template</title>
+</head>
+
+<body>
+
+    <h1>Upload Certificate Template</h1>
+
+    <h2>{{ event[1] }}</h2>
+
+    <p>
+        <strong>Organization:</strong>
+        {{ event[2] }}
+    </p>
+
+    <hr>
+
+    <h3>
+        {% if certificate_type == "Merit" %}
+            🏆 Merit Certificate Template
+        {% else %}
+            🎨 Participation Certificate Template
+        {% endif %}
+    </h3>
+
+    <form
+        action="{{ url_for('upload_template', event_id=event[0]) }}"
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        <input
+            type="hidden"
+            name="certificate_type"
+            value="{{ certificate_type }}"
+        >
+
+        <label for="template_name">
+            <strong>Template Name</strong>
+        </label>
+
+        <br>
+
+        <input
+            type="text"
+            id="template_name"
+            name="template_name"
+            placeholder="Example: Pottery Participation Certificate"
+            required
+        >
+
+        <br><br>
+
+        <label for="template_file">
+            <strong>Certificate Template</strong>
+        </label>
+
+        <br>
+
+        <input
+            type="file"
+            id="template_file"
+            name="template_file"
+            accept=".png,.jpg,.jpeg"
+            required
+        >
+
+        <p>
+            Supported formats: PNG, JPG, JPEG
+        </p>
+
+        <p>
+            Tip: Leave enough empty space in the center of the design
+            for the participant's name.
+        </p>
+
+        <br>
+
+        <button type="submit">
+            Upload
+            {% if certificate_type == "Merit" %}
+                Merit Template
+            {% else %}
+                Participation Template
+            {% endif %}
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="{{ url_for('event_details', event_id=event[0]) }}">
+        ← Back to Event
+    </a>
+
+</body>
+
+</html>

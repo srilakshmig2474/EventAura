@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Attendance</title>
+
+</head>
+
+<body>
+
+    {% if success %}
+
+        <h1>✅ Attendance Marked</h1>
+
+        <h2>Welcome, {{ participant_name }}!</h2>
+
+        <p>
+            <strong>Event:</strong>
+            {{ event_name }}
+        </p>
+
+        <p>
+            <strong>Registration ID:</strong>
+            {{ registration_code }}
+        </p>
+
+        <p>
+            Your attendance has been successfully recorded.
+        </p>
+
+    {% else %}
+
+        <h1>❌ Attendance Failed</h1>
+
+        <p>
+            {{ message }}
+        </p>
+
+    {% endif %}
+
+</body>
+
+</html>

@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{{ event[1] }} | Participant Registration</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                linear-gradient(
+                    135deg,
+                    #f5f7fb,
+                    #eef3f9
+                );
+            min-height: 100vh;
+            color: #172554;
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 18px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow:
+                0 20px 50px rgba(15, 23, 42, 0.12);
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            background:
+                linear-gradient(
+                    135deg,
+                    #102a43,
+                    #1e4d73
+                );
+            color: white;
+            padding: 42px 40px;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .header h1 {
+            font-size: 34px;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #dbeafe;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           EVENT INFORMATION
+        ========================= */
+
+        .event-info {
+            padding: 28px 40px 10px;
+        }
+
+        .event-info h2 {
+            font-size: 20px;
+            color: #172554;
+            margin-bottom: 20px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .info-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 16px 18px;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .info-value {
+            font-size: 15px;
+            color: #172554;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-section {
+            padding: 30px 40px 40px;
+        }
+
+        .form-section h2 {
+            font-size: 22px;
+            color: #172554;
+            margin-bottom: 8px;
+        }
+
+        .form-description {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .required {
+            color: #dc2626;
+        }
+
+        .form-group input {
+            width: 100%;
+            height: 50px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 0 15px;
+            font-size: 15px;
+            color: #172554;
+            background: white;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #2563eb;
+            box-shadow:
+                0 0 0 4px rgba(37, 99, 235, 0.10);
+        }
+
+        .form-group input::placeholder {
+            color: #94a3b8;
+        }
+
+        .help-text {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .submit-button {
+            width: 100%;
+            height: 52px;
+            border: none;
+            border-radius: 12px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #173f63,
+                    #285d87
+                );
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s ease;
+            box-shadow:
+                0 8px 20px rgba(30, 77, 115, 0.20);
+        }
+
+        .submit-button:hover {
+            transform: translateY(-1px);
+            box-shadow:
+                0 12px 25px rgba(30, 77, 115, 0.28);
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
+
+        /* =========================
+           FLASH MESSAGES
+        ========================= */
+
+        .messages {
+            padding: 0 40px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 13px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .message.success {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .message.error {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            border-top: 1px solid #e2e8f0;
+            padding: 20px 40px 25px;
+            text-align: center;
+        }
+
+        .footer p {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+
+        .back-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 650px) {
+
+            .page {
+                padding: 15px;
+                align-items: flex-start;
+            }
+
+            .container {
+                border-radius: 18px;
+                margin-top: 10px;
+            }
+
+            .header {
+                padding: 32px 22px;
+            }
+
+            .header h1 {
+                font-size: 27px;
+            }
+
+            .header p {
+                font-size: 14px;
+            }
+
+            .event-info,
+            .form-section {
+                padding-left: 22px;
+                padding-right: 22px;
+            }
+
+            .messages {
+                padding-left: 22px;
+                padding-right: 22px;
+            }
+
+            .footer {
+                padding-left: 22px;
+                padding-right: 22px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+    <div class="container">
+
+
+        <!-- =========================
+             HEADER
+        ========================== -->
+
+        <div class="header">
+
+            <div class="badge">
+                Event Registration
+            </div>
+
+            <h1>
+                {{ event[1] }}
+            </h1>
+
+            <p>
+                Register for this event by entering
+                your details below.
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             FLASH MESSAGES
+        ========================== -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                <div class="messages">
+
+                    {% for category, message in messages %}
+
+                        <div class="message {{ category }}">
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- =========================
+             EVENT INFORMATION
+        ========================== -->
+
+        <div class="event-info">
+
+            <h2>
+                Event Information
+            </h2>
+
+
+            <div class="info-grid">
+
+
+                <div class="info-card">
+
+                    <div class="info-label">
+                        Organization
+                    </div>
+
+                    <div class="info-value">
+                        {{ event[5] }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-label">
+                        Event Type
+                    </div>
+
+                    <div class="info-value">
+                        {{ event[2] }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-label">
+                        Date
+                    </div>
+
+                    <div class="info-value">
+                        {{ event[3] }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-label">
+                        Venue
+                    </div>
+
+                    <div class="info-value">
+                        {{ event[4] }}
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             REGISTRATION FORM
+        ========================== -->
+
+        <div class="form-section">
+
+            <h2>
+                Participant Details
+            </h2>
+
+            <p class="form-description">
+                Please provide your details to complete
+                your event registration.
+            </p>
+
+
+            <form
+                action="{{ url_for('register_participant', event_id=event[0]) }}"
+                method="POST"
+            >
+
+
+                <!-- FULL NAME -->
+
+                <div class="form-group">
+
+                    <label for="participant_name">
+
+                        Full Name
+
+                        <span class="required">
+                            *
+                        </span>
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="participant_name"
+                        name="participant_name"
+                        placeholder="Enter your full name"
+                        autocomplete="name"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- PHONE -->
+
+                <div class="form-group">
+
+                    <label for="phone">
+
+                        Phone Number
+
+                        <span class="required">
+                            *
+                        </span>
+
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder="Enter your phone number"
+                        autocomplete="tel"
+                        pattern="[0-9+\-\s()]{10,15}"
+                        required
+                    >
+
+                    <div class="help-text">
+                        Enter a valid phone number.
+                    </div>
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="email">
+
+                        Email ID
+
+                        <span class="required">
+                            *
+                        </span>
+
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+
+                    <div class="help-text">
+                        Your certificate will be sent to this email address.
+                    </div>
+
+                </div>
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="submit-button"
+                >
+                    Register for Event
+                </button>
+
+
+            </form>
+
+        </div>
+
+
+        <!-- =========================
+             FOOTER
+        ========================== -->
+
+        <div class="footer">
+
+            <p>
+                Your registration details will be securely
+                stored for event management and certificate delivery.
+            </p>
+
+            <a
+                class="back-link"
+                href="{{ url_for('event_details', event_id=event[0]) }}"
+            >
+                ← Back to Event
+            </a>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

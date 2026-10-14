@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful | Smart Event Certificate Platform</title>
+    <style>
+        :root { color-scheme: light; --navy: #101b35; --cream: #f7f3ec; --terracotta: #a76549; --ink: #263044; --muted: #687386; }
+        * { box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; padding: 28px 16px; display: grid; place-items: center; background: linear-gradient(135deg, #eef1f7, var(--cream)); color: var(--ink); font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+        .card { width: min(100%, 620px); background: #fff; border: 1px solid #e7e9ef; border-radius: 24px; padding: clamp(24px, 5vw, 42px); text-align: center; box-shadow: 0 22px 70px rgba(16, 27, 53, .12); }
+        .check { width: 58px; height: 58px; margin: 0 auto 16px; display: grid; place-items: center; border-radius: 50%; background: #e6f6ed; color: #18794e; font-size: 30px; font-weight: 800; }
+        .eyebrow { margin: 0 0 8px; color: var(--terracotta); font-size: 12px; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
+        h1 { margin: 0 0 12px; color: var(--navy); font-size: clamp(27px, 5vw, 36px); line-height: 1.15; }
+        .intro { margin: 0 auto 24px; max-width: 460px; color: var(--muted); line-height: 1.65; }
+        .event { margin: 0 0 22px; padding: 16px; border-radius: 14px; background: #f8f6f2; }
+        .event strong { display: block; margin-bottom: 5px; color: var(--navy); font-size: 18px; }
+        .event span { color: var(--muted); font-size: 14px; }
+        .qr-wrap { display: inline-block; margin: 0 auto 18px; padding: 14px; border: 1px solid #e4e7ed; border-radius: 18px; background: white; }
+        .qr-wrap img { display: block; width: min(100%, 250px); height: auto; image-rendering: pixelated; }
+        .registration { margin: 0 auto 22px; padding: 14px; border: 1px dashed #d7c3b7; border-radius: 12px; background: #fffaf6; }
+        .registration small { display: block; margin-bottom: 6px; color: var(--muted); }
+        .registration code { color: var(--navy); font-size: 16px; font-weight: 800; overflow-wrap: anywhere; }
+        .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .button { display: inline-flex; justify-content: center; align-items: center; min-height: 46px; padding: 12px 18px; border-radius: 12px; text-decoration: none; font-weight: 750; transition: transform .15s ease, opacity .15s ease; }
+        .button:hover { transform: translateY(-1px); opacity: .92; }
+        .primary { color: white; background: var(--navy); }
+        .secondary { color: var(--navy); background: #edf0f6; }
+        .note { margin: 22px 0 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+        @media (max-width: 420px) { .actions { flex-direction: column; } .button { width: 100%; } }
+    </style>
+</head>
+<body>
+    <main class="card">
+        <div class="check" aria-hidden="true">✓</div>
+        <p class="eyebrow">Smart Event Certificate Platform</p>
+        <h1>Registration successful!</h1>
+        <p class="intro">Thank you, {{ participant_name | e }}. Your registration is confirmed. Save this QR code and bring it with you to the event.</p>
+
+        <section class="event" aria-label="Event details">
+            <strong>{{ event[1] | e }}</strong>
+            <span>{{ event[3] }}{% if event[4] %} · {{ event[4] | e }}{% endif %}</span>
+        </section>
+
+        <div class="qr-wrap">
+            <img src="{{ url_for('static', filename='qr_codes/' + qr_filename) }}" alt="Your personal event attendance QR code">
+        </div>
+
+        <div class="registration">
+            <small>Your registration ID</small>
+            <code>{{ registration_code | e }}</code>
+        </div>
+
+        <div class="actions">
+            <a class="button primary" href="{{ url_for('download_qr_code', registration_code=registration_code) }}">Download QR Code</a>
+            <a class="button secondary" href="{{ url_for('register_participant', event_id=event[0]) }}">Back to Event Form</a>
+        </div>
+
+        {% if qr_email_sent %}
+        <p class="note" style="color:#18794e;font-weight:700;">A confirmation email with your QR code attachment has been sent to {{ email | e }}.</p>
+        {% else %}
+        <p class="note" style="color:#a14432;font-weight:700;">Your registration is saved, but we could not send the QR email right now. Please download the QR code above. You can try again later or contact the organizer.</p>
+        {% endif %}
+
+        <p class="note">Keep your QR code safe. It is intended for event attendance. Your certificate will be generated only if the organizer records you as present.</p>
+    </main>
+</body>
+</html>

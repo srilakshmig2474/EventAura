@@ -1,0 +1,2620 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+
+<head>
+
+
+
+    <meta charset="UTF-8">
+
+
+
+    <meta
+
+        name="viewport"
+
+        content="width=device-width, initial-scale=1.0"
+
+    >
+
+
+
+    <title>
+
+        {{ event[1] }} | Smart Event Certificate Platform
+
+    </title>
+
+
+
+    <!-- Main frontend CSS -->
+
+    <link
+
+        rel="stylesheet"
+
+        href="{{ url_for('static', filename='css/style.css') }}"
+
+    >
+
+
+
+</head>
+
+
+
+
+
+<body>
+
+
+
+<div class="page">
+
+
+
+
+
+    <!-- ===================================================== -->
+
+    <!-- EVENT HEADER -->
+
+    <!-- ===================================================== -->
+
+
+
+    <section class="hero">
+
+
+
+        <div class="hero-content">
+
+
+
+            <div class="hero-badge">
+
+                🤖 AI POWERED CERTIFICATE PLATFORM
+
+            </div>
+
+
+
+            <h1>
+
+                {{ event[1] }}
+
+            </h1>
+
+
+
+            <p class="hero-description">
+
+                Manage participants, attendance and
+
+                AI-generated certificates from one place.
+
+            </p>
+
+
+
+            <div class="event-info-grid">
+
+
+
+                <div class="event-info-item">
+
+                    <span>🏢 Organization</span>
+
+                    <strong>
+
+                        {{ event[6] }}
+
+                    </strong>
+
+                </div>
+
+
+
+                <div class="event-info-item">
+
+                    <span>🎯 Event Type</span>
+
+                    <strong>
+
+                        {{ event[2] }}
+
+                    </strong>
+
+                </div>
+
+
+
+                <div class="event-info-item">
+
+                    <span>📅 Date</span>
+
+                    <strong>
+
+                        {{ event[4] }}
+
+                    </strong>
+
+                </div>
+
+
+
+                <div class="event-info-item">
+
+                    <span>📍 Venue</span>
+
+                    <strong>
+
+                        {{ event[5] }}
+
+                    </strong>
+
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+    </section>
+
+
+
+
+
+    <!-- ===================================================== -->
+
+    <!-- FLASH MESSAGES -->
+
+    <!-- ===================================================== -->
+
+
+
+    {% with messages = get_flashed_messages(
+
+        with_categories=true
+
+    ) %}
+
+
+
+        {% if messages %}
+
+
+
+            <div class="flash-container">
+
+
+
+                {% for category, message in messages %}
+
+
+
+                    <div
+
+                        class="flash-message {{ category }}"
+
+                    >
+
+                        {{ message }}
+
+                    </div>
+
+
+
+                {% endfor %}
+
+
+
+            </div>
+
+
+
+        {% endif %}
+
+
+
+    {% endwith %}
+
+
+
+
+
+
+
+    <!-- ===================================================== -->
+
+
+    <!-- ===================================================== -->
+    <!-- PUBLIC REGISTRATION LINK -->
+    <!-- ===================================================== -->
+
+    <section class="card" style="margin-bottom: 28px;">
+
+        <div class="section-header">
+
+            <div>
+
+                <span class="section-label">
+                    PUBLIC REGISTRATION
+                </span>
+
+                <h2>
+                    🔗 Share Event Registration
+                </h2>
+
+                <p>
+                    Copy the registration link and share it with your participants.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            style="
+                background: #f8fafc;
+                border: 1px solid #dbe4ef;
+                border-radius: 16px;
+                padding: 22px;
+            "
+        >
+
+            <div
+                style="
+                    font-size: 12px;
+                    font-weight: 700;
+                    color: #64748b;
+                    text-transform: uppercase;
+                    letter-spacing: 0.8px;
+                    margin-bottom: 8px;
+                "
+            >
+                Registration URL
+            </div>
+
+
+            <div
+                style="
+                    display: flex;
+                    gap: 10px;
+                    align-items: center;
+                    flex-wrap: wrap;
+                "
+            >
+
+                <input
+                    type="text"
+                    id="registrationUrl"
+                    value="{{ url_for('register_participant', event_id=event[0], _external=True) }}"
+                    readonly
+                    style="
+                        flex: 1;
+                        min-width: 250px;
+                        height: 48px;
+                        border: 1px solid #cbd5e1;
+                        border-radius: 10px;
+                        padding: 0 14px;
+                        background: white;
+                        color: #334155;
+                        font-size: 14px;
+                        outline: none;
+                    "
+                >
+
+
+                <button
+                    type="button"
+                    class="button primary"
+                    onclick="copyRegistrationLink()"
+                >
+                    📋 Copy Link
+                </button>
+
+
+                <a
+                    href="{{ url_for('register_participant', event_id=event[0]) }}"
+                    target="_blank"
+                    class="button secondary"
+                >
+                    ↗ Open
+                </a>
+
+
+            </div>
+
+
+            <p
+                id="copyMessage"
+                style="
+                    display: none;
+                    margin-top: 12px;
+                    color: #15803d;
+                    font-size: 13px;
+                    font-weight: 600;
+                "
+            >
+                ✓ Registration link copied successfully.
+            </p>
+
+
+            <div
+                style="
+                    margin-top: 16px;
+                    padding: 13px 15px;
+                    border-radius: 10px;
+                    background: #eff6ff;
+                    color: #475569;
+                    font-size: 13px;
+                    line-height: 1.6;
+                "
+            >
+                💡 <strong>How it works:</strong>
+                Participants open this link, enter their full name,
+                phone number and email ID, and submit the form.
+                Their registration is then stored automatically in
+                the database and appears in the participant list below.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PARTICIPANTS OVERVIEW -->
+
+    <!-- ===================================================== -->
+
+
+
+    <section class="card">
+
+
+
+        <div class="section-header">
+
+
+
+            <div>
+
+
+
+                <span class="section-label">
+
+                    EVENT MANAGEMENT
+
+                </span>
+
+
+
+                <h2>
+
+                    👥 Participants
+
+                </h2>
+
+
+
+                <p>
+
+                    View registered participants and their
+
+                    attendance status.
+
+                </p>
+
+
+
+            </div>
+
+
+
+
+
+            <a
+
+                href="{{ url_for(
+
+                    'register_participant',
+
+                    event_id=event[0]
+
+                ) }}"
+
+                class="button primary"
+
+            >
+
+                + Register Participant
+
+            </a>
+
+
+
+        </div>
+
+
+
+
+
+        {% if participants %}
+
+
+
+        <div class="table-container">
+
+
+
+            <table class="modern-table">
+
+
+
+                <thead>
+
+
+
+                    <tr>
+
+
+
+                        <th>
+
+                            Registration ID
+
+                        </th>
+
+
+
+                        <th>
+
+                            Participant
+
+                        </th>
+
+
+
+                        <th>
+
+                            Email
+
+                        </th>
+
+
+
+                        <th>
+
+                            Phone
+
+                        </th>
+
+
+
+                        <th>
+
+                            Registered
+
+                        </th>
+
+
+
+                        <th>
+
+                            Attendance
+
+                        </th>
+
+
+
+                    </tr>
+
+
+
+                </thead>
+
+
+
+
+
+                <tbody>
+
+
+
+                {% for participant in participants %}
+
+
+
+                    <tr>
+
+
+
+                        <td>
+
+                            <span class="registration-id">
+
+                                {{ participant[1] }}
+
+                            </span>
+
+                        </td>
+
+
+
+                        <td>
+
+
+
+                            <strong>
+
+                                {{ participant[2] }}
+
+                            </strong>
+
+
+
+                        </td>
+
+
+
+                        <td>
+
+                            {{ participant[3] }}
+
+                        </td>
+
+
+
+                        <td>
+
+                            {{ participant[4] }}
+
+                        </td>
+
+
+
+                        <td>
+
+                            {{ participant[5] }}
+
+                        </td>
+
+
+
+                        <td>
+
+
+
+                            {% if participant[6] == "Present" %}
+
+
+
+                                <span class="status present">
+
+                                    ✓ Present
+
+                                </span>
+
+
+
+                            {% elif participant[6] == "Absent" %}
+
+
+
+                                <span class="status absent">
+
+                                    ✕ Absent
+
+                                </span>
+
+
+
+                            {% else %}
+
+
+
+                                <span class="status pending">
+
+                                    ○ Not Marked
+
+                                </span>
+
+
+
+                            {% endif %}
+
+
+
+                        </td>
+
+
+
+                    </tr>
+
+
+
+                {% endfor %}
+
+
+
+                </tbody>
+
+
+
+            </table>
+
+
+
+        </div>
+
+
+
+        {% else %}
+
+
+
+            <div class="empty-state">
+
+
+
+                <div class="empty-icon">
+
+                    👥
+
+                </div>
+
+
+
+                <h3>
+
+                    No participants yet
+
+                </h3>
+
+
+
+                <p>
+
+                    Register participants before generating
+
+                    certificates.
+
+                </p>
+
+
+
+                <a
+
+                    href="{{ url_for(
+
+                        'register_participant',
+
+                        event_id=event[0]
+
+                    ) }}"
+
+                    class="button primary"
+
+                >
+
+                    Register First Participant
+
+                </a>
+
+
+
+            </div>
+
+
+
+        {% endif %}
+
+
+
+    </section>
+
+
+
+
+
+
+
+    <!-- ===================================================== -->
+
+    <!-- AI CERTIFICATE DESIGNER -->
+
+    <!-- ===================================================== -->
+
+
+
+
+
+    <form
+
+        method="POST"
+
+        action="{{ url_for(
+
+            'generate_certificates',
+
+            event_id=event[0]
+
+        ) }}"
+
+        id="certificateForm"
+
+    >
+
+
+
+
+
+        <section class="ai-designer">
+
+
+
+            <div class="ai-heading">
+
+
+
+                <div class="ai-icon">
+
+                    ✨
+
+                </div>
+
+
+
+                <div>
+
+
+
+                    <span class="section-label">
+
+                        ARTIFICIAL INTELLIGENCE
+
+                    </span>
+
+
+
+                    <h2>
+
+                        AI Certificate Designer
+
+                    </h2>
+
+
+
+                    <p>
+
+                        Let Gemini create a certificate design
+
+                        that matches your event.
+
+                    </p>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+            <!-- AI EXPLANATION -->
+
+
+
+            <div class="ai-explanation">
+
+
+
+                <div class="ai-explanation-icon">
+
+                    🤖
+
+                </div>
+
+
+
+                <div>
+
+
+
+                    <strong>
+
+                        How AI certificate generation works
+
+                    </strong>
+
+
+
+                    <p>
+
+
+
+                        Gemini analyzes your event type,
+
+                        event name and description and
+
+                        combines them with your preferences
+
+                        to select a suitable visual style,
+
+                        color palette, decoration and
+
+                        typography.
+
+
+
+                    </p>
+
+
+
+                    <div class="ai-flow">
+
+
+
+                        <span>
+
+                            Event
+
+                        </span>
+
+
+
+                        <span>→</span>
+
+
+
+                        <span>
+
+                            Gemini AI
+
+                        </span>
+
+
+
+                        <span>→</span>
+
+
+
+                        <span>
+
+                            Design
+
+                        </span>
+
+
+
+                        <span>→</span>
+
+
+
+                        <span>
+
+                            PDF
+
+                        </span>
+
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+
+
+            <!-- EVENT CONTEXT -->
+
+
+
+            <div class="event-context">
+
+
+
+                <div class="context-card">
+
+
+
+                    <span>
+
+                        EVENT
+
+                    </span>
+
+
+
+                    <strong>
+
+                        {{ event[1] }}
+
+                    </strong>
+
+
+
+                </div>
+
+
+
+
+
+                <div class="context-card">
+
+
+
+                    <span>
+
+                        EVENT TYPE
+
+                    </span>
+
+
+
+                    <strong>
+
+                        {{ event[2] }}
+
+                    </strong>
+
+
+
+                </div>
+
+
+
+
+
+                <div class="context-card">
+
+
+
+                    <span>
+
+                        ORGANIZATION
+
+                    </span>
+
+
+
+                    <strong>
+
+                        {{ event[6] }}
+
+                    </strong>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+
+
+            <!-- AI PREFERENCES -->
+
+
+
+            <div class="designer-title">
+
+
+
+                <h3>
+
+                    🎨 Customize the AI Design
+
+                </h3>
+
+
+
+                <span>
+
+                    Optional — AI can choose automatically
+
+                </span>
+
+
+
+            </div>
+
+
+
+
+
+            <div class="design-grid">
+
+
+
+
+
+                <!-- STYLE -->
+
+
+
+                <div class="design-option">
+
+
+
+                    <label for="design_mood">
+
+
+
+                        ✨ Overall Style
+
+
+
+                    </label>
+
+
+
+                    <select
+
+                        id="design_mood"
+
+                        name="design_mood"
+
+                    >
+
+
+
+                        <option>
+
+                            AI chooses based on the event
+
+                        </option>
+
+
+
+                        <option>
+
+                            Elegant and premium
+
+                        </option>
+
+
+
+                        <option>
+
+                            Modern and minimal
+
+                        </option>
+
+
+
+                        <option>
+
+                            Creative and artistic
+
+                        </option>
+
+
+
+                        <option>
+
+                            Academic and formal
+
+                        </option>
+
+
+
+                        <option>
+
+                            Bold and energetic
+
+                        </option>
+
+
+
+                        <option>
+
+                            Traditional and classic
+
+                        </option>
+
+
+
+                    </select>
+
+
+
+                    <small>
+
+                        AI may override this when another
+
+                        style better matches the event.
+
+                    </small>
+
+
+
+                </div>
+
+
+
+
+
+
+
+                <!-- COLOR -->
+
+
+
+                <div class="design-option">
+
+
+
+                    <label for="color_preference">
+
+
+
+                        🎨 Color Palette
+
+
+
+                    </label>
+
+
+
+                    <select
+
+                        id="color_preference"
+
+                        name="color_preference"
+
+                    >
+
+
+
+                        <option>
+
+                            AI chooses based on the event
+
+                        </option>
+
+
+
+                        <option>
+
+                            Blue / professional
+
+                        </option>
+
+
+
+                        <option>
+
+                            Green / natural
+
+                        </option>
+
+
+
+                        <option>
+
+                            Gold / luxury
+
+                        </option>
+
+
+
+                        <option>
+
+                            Terracotta / artistic
+
+                        </option>
+
+
+
+                        <option>
+
+                            Purple / creative
+
+                        </option>
+
+
+
+                        <option>
+
+                            Black and gold / premium
+
+                        </option>
+
+
+
+                        <option>
+
+                            Pastel / elegant
+
+                        </option>
+
+
+
+                    </select>
+
+
+
+                </div>
+
+
+
+
+
+
+
+                <!-- DECORATION -->
+
+
+
+                <div class="design-option">
+
+
+
+                    <label for="decoration_preference">
+
+
+
+                        ✦ Decoration
+
+
+
+                    </label>
+
+
+
+                    <select
+
+                        id="decoration_preference"
+
+                        name="decoration_preference"
+
+                    >
+
+
+
+                        <option>
+
+                            AI chooses based on the event
+
+                        </option>
+
+
+
+                        <option>
+
+                            Minimal and clean
+
+                        </option>
+
+
+
+                        <option>
+
+                            Geometric
+
+                        </option>
+
+
+
+                        <option>
+
+                            Floral / ornamental
+
+                        </option>
+
+
+
+                        <option>
+
+                            Artistic line-art
+
+                        </option>
+
+
+
+                        <option>
+
+                            Technology / circuit inspired
+
+                        </option>
+
+
+
+                        <option>
+
+                            Luxury decorative
+
+                        </option>
+
+
+
+                    </select>
+
+
+
+                </div>
+
+
+
+
+
+
+
+                <!-- TYPOGRAPHY -->
+
+
+
+                <div class="design-option">
+
+
+
+                    <label for="typography_preference">
+
+
+
+                        Aa Typography
+
+
+
+                    </label>
+
+
+
+                    <select
+
+                        id="typography_preference"
+
+                        name="typography_preference"
+
+                    >
+
+
+
+                        <option>
+
+                            AI chooses based on the event
+
+                        </option>
+
+
+
+                        <option>
+
+                            Classic serif
+
+                        </option>
+
+
+
+                        <option>
+
+                            Modern sans-serif
+
+                        </option>
+
+
+
+                        <option>
+
+                            Serif + modern sans-serif
+
+                        </option>
+
+
+
+                        <option>
+
+                            Bold modern
+
+                        </option>
+
+
+
+                        <option>
+
+                            Elegant artistic
+
+                        </option>
+
+
+
+                    </select>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+            <div class="ai-note">
+
+
+
+                💡
+
+                <div>
+
+
+
+                    <strong>
+
+                        No certificate template is required.
+
+                    </strong>
+
+
+
+                    <p>
+
+                        The certificate is generated
+
+                        programmatically according to the
+
+                        AI-selected design.
+
+                    </p>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+        </section>
+
+
+
+
+
+
+
+        <!-- ================================================= -->
+
+        <!-- ASSIGN CERTIFICATES -->
+
+        <!-- ================================================= -->
+
+
+
+
+
+        <section class="card">
+
+
+
+            <div class="section-header">
+
+
+
+                <div>
+
+
+
+                    <span class="section-label">
+
+                        CERTIFICATE MANAGEMENT
+
+                    </span>
+
+
+
+                    <h2>
+
+                        🏆 Assign Certificates
+
+                    </h2>
+
+
+
+                    <p>
+
+                        Select the certificate type for each
+
+                        participant who attended the event.
+
+                    </p>
+
+
+
+                </div>
+
+
+
+
+
+                <div class="certificate-counter">
+
+
+
+                    <span>
+
+                        Selected
+
+                    </span>
+
+
+
+                    <strong id="selectedCount">
+
+                        0
+
+                    </strong>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+            <div class="assignment-info">
+
+
+
+                <div>
+
+                    🏆
+
+                    <strong>Merit</strong>
+
+                    — Merit certificate
+
+                </div>
+
+
+
+                <div>
+
+                    🎨
+
+                    <strong>Participation</strong>
+
+                    — Participation certificate
+
+                </div>
+
+
+
+                <div>
+
+                    ✕
+
+                    <strong>Absent</strong>
+
+                    — No certificate
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+            {% if participants %}
+
+
+
+            <div class="table-container">
+
+
+
+                <table class="modern-table assignment-table">
+
+
+
+                    <thead>
+
+
+
+                        <tr>
+
+
+
+                            <th>
+
+                                Participant
+
+                            </th>
+
+
+
+                            <th>
+
+                                Email
+
+                            </th>
+
+
+
+                            <th>
+
+                                Attendance
+
+                            </th>
+
+
+
+                            <th>
+
+                                Certificate
+
+                            </th>
+
+
+
+                        </tr>
+
+
+
+                    </thead>
+
+
+
+
+
+                    <tbody>
+
+
+
+                    {% for participant in participants %}
+
+
+
+                        <tr>
+
+
+
+                            <td>
+
+
+
+                                <div class="participant-cell">
+
+
+
+                                    <div class="avatar">
+
+                                        {{ participant[2][0]|upper }}
+
+                                    </div>
+
+
+
+                                    <div>
+
+
+
+                                        <strong>
+
+                                            {{ participant[2] }}
+
+                                        </strong>
+
+
+
+                                        <small>
+
+                                            ID:
+
+                                            {{ participant[1] }}
+
+                                        </small>
+
+
+
+                                    </div>
+
+
+
+                                </div>
+
+
+
+                            </td>
+
+
+
+
+
+                            <td>
+
+                                {{ participant[3] }}
+
+                            </td>
+
+
+
+
+
+                            <td>
+
+
+
+                                {% if participant[6] == "Present" %}
+
+
+
+                                    <span class="status present">
+
+                                        ✓ Present
+
+                                    </span>
+
+
+
+                                {% elif participant[6] == "Absent" %}
+
+
+
+                                    <span class="status absent">
+
+                                        ✕ Absent
+
+                                    </span>
+
+
+
+                                {% else %}
+
+
+
+                                    <span class="status pending">
+
+                                        ○ Not Marked
+
+                                    </span>
+
+
+
+                                {% endif %}
+
+
+
+                            </td>
+
+
+
+
+
+                            <td>
+
+
+
+                                {% if participant[6] == "Present" %}
+
+
+
+                                    <select
+
+                                        class="certificate-select"
+
+                                        name="certificate_assignment_{{ participant[0] }}"
+
+                                    >
+
+
+
+                                        <option value="">
+
+                                            No Certificate
+
+                                        </option>
+
+
+
+                                        <option value="Merit">
+
+                                            🏆 Merit
+
+                                        </option>
+
+
+
+                                        <option value="Participation">
+
+                                            🎨 Participation
+
+                                        </option>
+
+
+
+                                    </select>
+
+
+
+                                {% else %}
+
+
+
+                                    <span class="disabled-certificate">
+
+                                        🔒 No Certificate
+
+                                    </span>
+
+
+
+                                {% endif %}
+
+
+
+                            </td>
+
+
+
+                        </tr>
+
+
+
+                    {% else %}
+
+
+
+                        <tr>
+
+
+
+                            <td
+
+                                colspan="4"
+
+                                class="empty-table"
+
+                            >
+
+                                No participants registered for
+
+                                this event.
+
+                            </td>
+
+
+
+                        </tr>
+
+
+
+                    {% endfor %}
+
+
+
+                    </tbody>
+
+
+
+                </table>
+
+
+
+            </div>
+
+
+
+
+
+            <div class="generate-area">
+
+
+
+                <div>
+
+
+
+                    <strong>
+
+                        Ready to generate?
+
+                    </strong>
+
+
+
+                    <p>
+
+                        Select Merit or Participation for
+
+                        the participants who should receive
+
+                        certificates.
+
+                    </p>
+
+
+
+                </div>
+
+
+
+
+
+                <button
+
+                    type="submit"
+
+                    class="button generate-button"
+
+                    id="generateButton"
+
+                >
+
+
+
+                    ✨ Generate AI Certificates
+
+
+
+                </button>
+
+
+
+            </div>
+
+
+
+
+
+            {% else %}
+
+
+
+                <div class="empty-state">
+
+
+
+                    <div class="empty-icon">
+
+                        👥
+
+                    </div>
+
+
+
+                    <h3>
+
+                        No participants registered
+
+                    </h3>
+
+
+
+                    <p>
+
+                        Register participants before
+
+                        assigning certificates.
+
+                    </p>
+
+
+
+                </div>
+
+
+
+            {% endif %}
+
+
+
+        </section>
+
+
+
+    </form>
+
+
+
+
+
+
+
+    <!-- ===================================================== -->
+
+    <!-- GENERATED CERTIFICATES -->
+
+    <!-- ===================================================== -->
+
+
+
+
+
+    <section class="card">
+
+
+
+        <div class="section-header">
+
+
+
+            <div>
+
+
+
+                <span class="section-label">
+
+                    COMPLETED
+
+                </span>
+
+
+
+                <h2>
+
+                    📜 Generated Certificates
+
+                </h2>
+
+
+
+                <p>
+
+                    View and email certificates generated
+
+                    for this event.
+
+                </p>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+        {% if generated_certificates %}
+
+
+
+        <div class="table-container">
+
+
+
+            <table class="modern-table">
+
+
+
+                <thead>
+
+
+
+                    <tr>
+
+
+
+                        <th>
+
+                            Participant
+
+                        </th>
+
+
+
+                        <th>
+
+                            Email
+
+                        </th>
+
+
+
+                        <th>
+
+                            Type
+
+                        </th>
+
+
+
+                        <th>
+
+                            Certificate Number
+
+                        </th>
+
+
+
+                        <th>
+
+                            Email Status
+
+                        </th>
+
+
+
+                        <th>
+
+                            Certificate
+
+                        </th>
+
+
+
+                    </tr>
+
+
+
+                </thead>
+
+
+
+
+
+                <tbody>
+
+
+
+                {% for certificate in generated_certificates %}
+
+
+
+                    <tr>
+
+
+
+                        <td>
+
+
+
+                            <strong>
+
+                                {{ certificate[2] }}
+
+                            </strong>
+
+
+
+                        </td>
+
+
+
+                        <td>
+
+                            {{ certificate[3] }}
+
+                        </td>
+
+
+
+                        <td>
+
+
+
+                            {% if certificate[4] == "Merit" %}
+
+
+
+                                <span class="certificate-type merit">
+
+                                    🏆 Merit
+
+                                </span>
+
+
+
+                            {% else %}
+
+
+
+                                <span class="certificate-type participation">
+
+                                    🎨 Participation
+
+                                </span>
+
+
+
+                            {% endif %}
+
+
+
+                        </td>
+
+
+
+                        <td>
+
+                            {{ certificate[5] }}
+
+                        </td>
+
+
+
+                        <td>
+
+
+
+                            {% if certificate[6] == "Sent" %}
+
+
+
+                                <span class="status present">
+
+                                    ✓ Sent
+
+                                </span>
+
+
+
+                            {% else %}
+
+
+
+                                <span class="status pending">
+
+                                    🕘 Not Sent
+
+                                </span>
+
+
+
+                            {% endif %}
+
+
+
+                        </td>
+
+
+
+                        <td>
+
+
+
+                            <a
+
+                                href="{{ url_for(
+
+                                    'view_certificate',
+
+                                    certificate_id=certificate[0]
+
+                                ) }}"
+
+                                target="_blank"
+
+                                class="button small-button"
+
+                            >
+
+                                View PDF
+
+                            </a>
+
+
+
+                        </td>
+
+
+
+                    </tr>
+
+
+
+                {% endfor %}
+
+
+
+                </tbody>
+
+
+
+            </table>
+
+
+
+        </div>
+
+
+
+
+
+        <form
+
+            method="POST"
+
+            action="{{ url_for(
+
+                'send_certificates',
+
+                event_id=event[0]
+
+            ) }}"
+
+        >
+
+
+
+            <div class="email-area">
+
+
+
+                <div>
+
+
+
+                    <strong>
+
+                        📧 Email Certificates
+
+                    </strong>
+
+
+
+                    <p>
+
+                        Send all generated certificates that
+
+                        have not yet been emailed.
+
+                    </p>
+
+
+
+                </div>
+
+
+
+
+
+                <button
+
+                    type="submit"
+
+                    class="button email-button"
+
+                >
+
+                    Send Unsent Certificates
+
+                </button>
+
+
+
+            </div>
+
+
+
+        </form>
+
+
+
+
+
+        {% else %}
+
+
+
+            <div class="empty-state">
+
+
+
+                <div class="empty-icon">
+
+                    📜
+
+                </div>
+
+
+
+                <h3>
+
+                    No certificates generated yet
+
+                </h3>
+
+
+
+                <p>
+
+                    Assign certificate types above and
+
+                    click Generate AI Certificates.
+
+                </p>
+
+
+
+            </div>
+
+
+
+        {% endif %}
+
+
+
+    </section>
+
+
+
+
+
+
+
+    <!-- ===================================================== -->
+
+    <!-- FOOTER NAVIGATION -->
+
+    <!-- ===================================================== -->
+
+
+
+
+
+    <div class="bottom-navigation">
+
+
+
+        <a
+
+            href="{{ url_for('dashboard') }}"
+
+            class="button secondary"
+
+        >
+
+            ← Back to Dashboard
+
+        </a>
+
+
+
+    </div>
+
+
+
+
+
+</div>
+
+
+
+
+
+<!-- ========================================================= -->
+
+
+    <script>
+
+        async function copyRegistrationLink() {
+            const input = document.getElementById("registrationUrl");
+            const message = document.getElementById("copyMessage");
+            const url = input ? input.value.trim() : "";
+
+            if (!url) {
+                message.textContent = "Unable to copy: registration link is empty.";
+                message.style.color = "#b91c1c";
+                message.style.display = "block";
+                return;
+            }
+
+            let copied = false;
+
+            // Clipboard API works in secure contexts and on localhost.
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(url);
+                    copied = true;
+                }
+            } catch (error) {
+                copied = false;
+            }
+
+            // Fallback for browsers where Clipboard API is unavailable/blocked.
+            if (!copied) {
+                const helper = document.createElement("textarea");
+                helper.value = url;
+                helper.setAttribute("readonly", "");
+                helper.style.position = "fixed";
+                helper.style.left = "-9999px";
+                helper.style.top = "0";
+                document.body.appendChild(helper);
+                helper.focus();
+                helper.select();
+                helper.setSelectionRange(0, helper.value.length);
+                try {
+                    copied = document.execCommand("copy");
+                } catch (error) {
+                    copied = false;
+                }
+                document.body.removeChild(helper);
+            }
+
+            message.style.display = "block";
+            if (copied) {
+                message.textContent = "✓ Registration link copied successfully.";
+                message.style.color = "#15803d";
+            } else {
+                message.textContent = "Copy was blocked by your browser. Select the link above and press Ctrl+C.";
+                message.style.color = "#b91c1c";
+                input.focus();
+                input.select();
+            }
+
+            window.clearTimeout(window.registrationCopyMessageTimer);
+            window.registrationCopyMessageTimer = window.setTimeout(function () {
+                message.style.display = "none";
+            }, 4000);
+        }
+
+    </script>
+
+
+<!-- JAVASCRIPT -->
+
+<!-- ========================================================= -->
+
+
+
+<script
+
+    src="{{ url_for(
+
+        'static',
+
+        filename='js/event_details.js'
+
+    ) }}"
+
+    defer
+
+></script>
+
+
+
+<script src="{{ url_for('static', filename='js/event_details.js') }}"></script>
+
+</body>
+
+
+
+</html>
